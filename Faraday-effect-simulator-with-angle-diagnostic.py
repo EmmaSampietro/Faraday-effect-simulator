@@ -59,7 +59,6 @@ j_y_previous = np.zeros(m_max)
 j_z_previous = np.zeros(m_max)
 
 angle_rec=np.zeros(n_max)  #array of zeros of length n_max to record rotation of polarization angle in time
-angle_rec_H=np.zeros(n_max)  
 
 
 
@@ -97,7 +96,7 @@ for n in range(n_max):
     H_z_previous[m] = H_z[m]
 
 
-  #Magnetic field source (along y axis since we have a z polarized wave)
+  #Magnetic field source (along z axis since we have a y polarized wave)
   tn=n*dt
   H_z[m_source-1] -= Source_Function(tn)/Z_0
   H_z_previous[m_source-1] = H_z[m_source-1]
@@ -125,7 +124,7 @@ for n in range(n_max):
     E_y_previous[m] = E_y[m]
 
 
-  #Electric field source (along z axis since we have a z polarized wave)
+  #Electric field source (along y axis since we have a y polarized wave)
   tnp1=(n+1)*dt
   E_y[m_source] += Source_Function(tnp1)
   E_y_previous[m_source] = E_y[m_source]
@@ -133,16 +132,12 @@ for n in range(n_max):
 
   #We record the polarization angle at this moment in time
   angle_rec[n] = polarization_angle(max(E_y),max(E_z))
-  angle_rec_H[n] = polarization_angle(max(H_z),max(H_y))
+
 
   #If we are at the end of the simulation, we record the final polarization rotation angle 
   if n==n_max-1:
     final_rotation=angle_rec[n_max-1]-angle_rec[0]
     print("The final rotation angle from the z axis is of degrees ", final_rotation)
-
-
-    final_rotation_H=angle_rec_H[n_max-1]-angle_rec_H[0]
-    print("The final rotation angle from the z axis is of degrees ", final_rotation_H)
 
 
   #we plot the wavepacket
@@ -186,13 +181,6 @@ for n in range(n_max):
 
 plt.figure()
 plt.plot(angle_rec)
-plt.title('Polarization angle with respect to the z-axis (in the y-z plane)')
-plt.xlabel('time step')
-plt.ylabel('angle (degrees)')
-
-
-plt.figure()
-plt.plot(angle_rec_H)
 plt.title('Polarization angle with respect to the z-axis (in the y-z plane)')
 plt.xlabel('time step')
 plt.ylabel('angle (degrees)')
