@@ -17,7 +17,7 @@ q_e = 1.6e-19     #electron charge
 B_0 = 5e2         #magnitude external B field
 
 m_max = 1300       #steps we want to perform (space)
-n_max = 1850      #steps we want to perform (time)
+n_max = 1500      #steps we want to perform (time)
 
 m_source = 1
 
@@ -149,14 +149,14 @@ for n in range(n_max):
     axs[0][0].plot(E_y)
     axs[0][0].set_title('$E_y$ field')
     axs[0][0].set_xlabel('X-axis (step)')
-    axs[0][0].set_ylabel('Z-axis')
+    axs[0][0].set_ylabel('Z-axis (N/C)')
     axs[0][0].set_ylim(-2.5, 2.5)
     axs[0][0].set_xlim(0, 1000)
 
     axs[1][0].plot(H_z, color='green')
-    axs[1][0].set_title('$H_z$ field')
+    axs[1][0].set_title(r'$\tilde{H}_z$ field')
     axs[1][0].set_xlabel('X-axis (step)')
-    axs[1][0].set_ylabel('Y-axis')
+    axs[1][0].set_ylabel('Y-axis (T)')
     axs[1][0].set_ylim(-2.5, 2.5)
     axs[1][0].set_xlim(0, 1000)
 
@@ -164,14 +164,14 @@ for n in range(n_max):
     #axs[0][1].plot(np.vectorize(polarization_angle(E_y, E_z)))
     axs[0][1].set_title('$E_z$ field')
     axs[0][1].set_xlabel('X-axis (step)')
-    axs[0][1].set_ylabel('Y-axis')
+    axs[0][1].set_ylabel('Y-axis (N/C)')
     axs[0][1].set_ylim(-2.5, 2.5)
     axs[0][1].set_xlim(0, 1000)
 
     axs[1][1].plot(H_y, color='green')
-    axs[1][1].set_title('$H_y$ field')
+    axs[1][1].set_title(r'$\tilde{H}_y$ field')
     axs[1][1].set_xlabel('X-axis (step)')
-    axs[1][1].set_ylabel('Z-axis')
+    axs[1][1].set_ylabel('Z-axis (T)')
     axs[1][1].set_ylim(-2.5, 2.5)
     axs[1][1].set_xlim(0, 1000)
 
@@ -179,8 +179,8 @@ for n in range(n_max):
     
 
 
-plt.figure()
+plt.figure(figsize=(10, 6)) 
 plt.plot(angle_rec)
-plt.title('Polarization angle with respect to the z-axis (in the y-z plane)')
-plt.xlabel('time step')
-plt.ylabel('angle (degrees)')
+plt.title('Polarization angle with respect to the y-axis (in the y-z plane)', fontsize=16)
+plt.xlabel('Time step', fontsize=14)
+plt.ylabel('Rotation angle (º)', fontsize=14)
