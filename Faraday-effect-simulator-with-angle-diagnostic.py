@@ -149,14 +149,14 @@ for n in range(n_max):
     axs[0][0].plot(E_y)
     axs[0][0].set_title('$E_y$ field')
     axs[0][0].set_xlabel('X-axis (step)')
-    axs[0][0].set_ylabel('Z-axis (N/C)')
+    axs[0][0].set_ylabel('Z-axis (Volt/m)')
     axs[0][0].set_ylim(-2.5, 2.5)
     axs[0][0].set_xlim(0, 1000)
 
     axs[1][0].plot(H_z, color='green')
     axs[1][0].set_title(r'$\tilde{H}_z$ field')
     axs[1][0].set_xlabel('X-axis (step)')
-    axs[1][0].set_ylabel('Y-axis (T)')
+    axs[1][0].set_ylabel('Y-axis (Volt/m)')
     axs[1][0].set_ylim(-2.5, 2.5)
     axs[1][0].set_xlim(0, 1000)
 
@@ -164,14 +164,14 @@ for n in range(n_max):
     #axs[0][1].plot(np.vectorize(polarization_angle(E_y, E_z)))
     axs[0][1].set_title('$E_z$ field')
     axs[0][1].set_xlabel('X-axis (step)')
-    axs[0][1].set_ylabel('Y-axis (N/C)')
+    axs[0][1].set_ylabel('Y-axis (Volt/m)')
     axs[0][1].set_ylim(-2.5, 2.5)
     axs[0][1].set_xlim(0, 1000)
 
     axs[1][1].plot(H_y, color='green')
     axs[1][1].set_title(r'$\tilde{H}_y$ field')
     axs[1][1].set_xlabel('X-axis (step)')
-    axs[1][1].set_ylabel('Z-axis (T)')
+    axs[1][1].set_ylabel('Z-axis (Volt/m)')
     axs[1][1].set_ylim(-2.5, 2.5)
     axs[1][1].set_xlim(0, 1000)
 
