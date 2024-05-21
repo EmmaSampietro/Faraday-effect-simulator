@@ -17,7 +17,7 @@ q_e = 1.6e-19     #electron charge
 B_0 = 5e2         #magnitude external B field
 
 m_max = 1300       #steps we want to perform (space)
-n_max = 1500      #steps we want to perform (time)
+n_max = 1800     #steps we want to perform (time)
 
 m_source = 1
 
@@ -142,45 +142,75 @@ for n in range(n_max):
 
   #we plot the wavepacket
   if n%40 == 0:
-    # Plotting the first plot
-    fig, axs = plt.subplots(2, 2, figsize=(10, 8))  # 2 row, 2 columns
-    fig.subplots_adjust(hspace=0.3, wspace=0.3)
+    #space steps we want to plot  
+    d=1000
+    
+    # Creating subplots
+    fig, axs = plt.subplots(2, 2, figsize=(10, 8))
+    fig.subplots_adjust(hspace=0.5, wspace=0.3)
+    
+    # Plotting in function of physical space instead of space steps
+    num_ticks = 5
+    tick_positions = np.linspace(0, d, num_ticks)
+    tick_labels = np.linspace(0, d*dx*1e6, num_ticks)
+    
 
     axs[0][0].plot(E_y)
-    axs[0][0].set_title('$E_y$ field')
-    axs[0][0].set_xlabel('X-axis (step)')
-    axs[0][0].set_ylabel('Z-axis (Volt/m)')
+    axs[0][0].set_title('$E_y$ field', fontsize=19)
+    axs[0][0].set_xlabel('X-axis ($\mu m$)', fontsize=15)
+    axs[0][0].set_ylabel('Y-axis (Volt/m)', fontsize=15)
     axs[0][0].set_ylim(-2.5, 2.5)
-    axs[0][0].set_xlim(0, 1000)
+    axs[0][0].set_xticks(tick_positions)
+    axs[0][0].set_xticklabels([f"{label:.1f}" for label in tick_labels])
+    axs[0][0].set_xlim(0, d)
+
 
     axs[1][0].plot(H_z, color='green')
-    axs[1][0].set_title(r'$\tilde{H}_z$ field')
-    axs[1][0].set_xlabel('X-axis (step)')
-    axs[1][0].set_ylabel('Y-axis (Volt/m)')
+    axs[1][0].set_title(r'$\tilde{H}_z$ field', fontsize=19)
+    axs[1][0].set_xlabel('X-axis ($\mu m$)', fontsize=15)
+    axs[1][0].set_ylabel('Z-axis (Volt/m)', fontsize=15)
     axs[1][0].set_ylim(-2.5, 2.5)
-    axs[1][0].set_xlim(0, 1000)
-
+    axs[1][0].set_xticks(tick_positions)
+    axs[1][0].set_xticklabels([f"{label:.1f}" for label in tick_labels])
+    axs[1][0].set_xlim(0, d)
+    
+    
     axs[0][1].plot(E_z)
-    #axs[0][1].plot(np.vectorize(polarization_angle(E_y, E_z)))
-    axs[0][1].set_title('$E_z$ field')
-    axs[0][1].set_xlabel('X-axis (step)')
-    axs[0][1].set_ylabel('Y-axis (Volt/m)')
+    axs[0][1].set_title('$E_z$ field', fontsize=19)
+    axs[0][1].set_xlabel('X-axis ($\mu m$)', fontsize=15)
+    axs[0][1].set_ylabel('Z-axis (Volt/m)', fontsize=15)
     axs[0][1].set_ylim(-2.5, 2.5)
-    axs[0][1].set_xlim(0, 1000)
-
+    axs[0][1].set_xticks(tick_positions)
+    axs[0][1].set_xticklabels([f"{label:.1f}" for label in tick_labels])
+    axs[0][1].set_xlim(0, d)
+    
+    
     axs[1][1].plot(H_y, color='green')
-    axs[1][1].set_title(r'$\tilde{H}_y$ field')
-    axs[1][1].set_xlabel('X-axis (step)')
-    axs[1][1].set_ylabel('Z-axis (Volt/m)')
+    axs[1][1].set_title(r'$\tilde{H}_y$ field', fontsize=19)
+    axs[1][1].set_xlabel('X-axis ($\mu m$)', fontsize=15)
+    axs[1][1].set_ylabel('Y-axis (Volt/m)', fontsize=15)
     axs[1][1].set_ylim(-2.5, 2.5)
-    axs[1][1].set_xlim(0, 1000)
-
+    axs[1][1].set_xticks(tick_positions)
+    axs[1][1].set_xticklabels([f"{label:.1f}" for label in tick_labels])
+    axs[1][1].set_xlim(0, d)
+    
     plt.show()
     
 
+#Plotting the polarization angle in function of time
 
+#Changing axis to seconds from time steps
+num_ticks1 = 6  
+tick_positions1 = np.linspace(0, n_max, num_ticks1)
+tick_labels1 = np.linspace(0, n_max*dt*1e15, num_ticks1)
+
+#Plotting it
 plt.figure(figsize=(10, 6)) 
 plt.plot(angle_rec)
-plt.title('Polarization angle with respect to the y-axis (in the y-z plane)', fontsize=16)
-plt.xlabel('Time step', fontsize=14)
-plt.ylabel('Rotation angle (º)', fontsize=14)
+plt.title('Polarization angle with respect to the y-axis (in the y-z plane)', fontsize=19)
+plt.xlabel('Time (fs)', fontsize=16)
+plt.ylabel('Rotation angle (º)', fontsize=16)
+plt.xticks(fontsize=15)
+plt.yticks(fontsize=15)
+plt.xticks(tick_positions1, [f"{label:.1f}" for label in tick_labels1])
+plt.xlim(0, n_max)
