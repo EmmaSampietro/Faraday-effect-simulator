@@ -13,13 +13,14 @@ mu_0 = 1.256637062e-6  #vacuum permeability
 
 c = 1/np.sqrt(e_0*mu_0) #speed of light
 m_e = 9.1e-31     #electron mass
-q_e = 1.6e-19     #electron charge
+q_e = 1.6e-19     #elementary charge
 B_0 = 5e2         #magnitude external B field
 
-m_max = 1300       #steps we want to perform (space)
-n_max = 1800     #steps we want to perform (time)
+m_max = 1000      #steps we want to perform (space)
+n_max = 1400      #steps we want to perform (time)
 
-m_source = 1
+m_source =  1     #step at which we insert the source
+
 
 #Constants for the source
 lambda_source = 550e-9 #wavelength of the source
@@ -27,15 +28,17 @@ w = 2*np.pi*c/lambda_source  #corresponding angular frequency
 tau = 10e-15
 t0 = tau*2         #center of the Gaussian pulse
 
-#step sizes
+
+#step sizes (satisfying the Courant condition dt<dx/c)
 dx = 25e-9         #step size on position
 dt = 0.9*dx/c      #step size on time
+
 
 #Constants we will use in our code
 Sc = c*dt/dx       #Courant number
 Z_0 = 1            #impedance of free space
 n = 1e27           #density of electrons in the medium
-gamma = 1          #damping coefficient
+gamma = 0          #damping coefficient
 Sc_o_Z0=Sc/Z_0     #to minimize constants in our code
 Z0Sc=Z_0*Sc        #to minimize constants in our code
 
@@ -68,13 +71,13 @@ def Source_Function(t):
   return E
 
 
-#Function to compute the angle of polarization in the y-z plane
+#Function to compute the angle of polarization wrt the y axis in the y-z plane
 def polarization_angle(E_y,E_z):
     if E_y==0:
         degree_angle = np.pi/2
     else:
         radians_angle = math.atan(E_z/E_y)
-        degree_angle = radians_angle*180/np.pi
+        degree_angle = radians_angle*180/np.pi  #converting the angle in degrees
     return degree_angle
 
 
@@ -87,7 +90,7 @@ for n in range(n_max):
   j_y[m_max-1]=j_y[m_max-2]
   j_z[m_max-1]=j_z[m_max-2]
 
-  for m in range(m_max-1):
+  for m in range(m_max-1): #staggered grid so we iterate starting at 0/ finish at m-1
     #space iteration (recall m is space index)
     H_y[m] = H_y_previous[m] + Sc_o_Z0 *(E_z[m+1]-E_z[m]) #updating magnetic field y axis
     H_y_previous[m] = H_y[m]
@@ -102,12 +105,12 @@ for n in range(n_max):
   H_z_previous[m_source-1] = H_z[m_source-1]
 
 
-  for m in range(m_max-1): 
+  for m in range(m_max-1): #staggered grid so we iterate starting at 0/ finish at m-1
     #space iteration
     j_y[m]=(j_y_previous[m]*math.cos(w_c*dt)-j_z_previous[m]*math.sin(w_c*dt))*math.exp(-gamma*dt) + E_y[m]     #updating the current j
     j_z[m]=(j_y_previous[m]*math.sin(w_c*dt)+j_z_previous[m]*math.cos(w_c*dt))*math.exp(-gamma*dt) + E_z[m]
 
-    j_y_previous[m]=j_y[m]
+    j_y_previous[m]=j_y[m]  #updating the field in time
     j_z_previous[m]=j_z[m]
 
 
@@ -115,12 +118,12 @@ for n in range(n_max):
   E_y[0]=E_y_previous[1]
 
 
-  for m in range(1,m_max): #staggered grid so we must iterate starting at +1/ finish at m+1
+  for m in range(1,m_max): #staggered grid so we iterate starting at +1/ finish at m
     #space iteration
     E_z[m] = E_z_previous[m] + Z0Sc * (H_y[m] - H_y[m-1]) - (w_p*dt)**2 * (j_z[m])     #updating electric field
     E_y[m] = E_y_previous[m] + Z0Sc * (H_z[m] - H_z[m-1]) - (w_p*dt)**2 * (j_y[m])
     
-    E_z_previous[m] = E_z[m]
+    E_z_previous[m] = E_z[m]  #updating the field in time
     E_y_previous[m] = E_y[m]
 
 
@@ -143,7 +146,7 @@ for n in range(n_max):
   #we plot the wavepacket
   if n%40 == 0:
     #space steps we want to plot  
-    d=1000
+    d=m_max-350
     
     # Creating subplots
     fig, axs = plt.subplots(2, 2, figsize=(10, 8))
@@ -199,7 +202,7 @@ for n in range(n_max):
 
 #Plotting the polarization angle in function of time
 
-#Changing axis to seconds from time steps
+#Plotting in function of seconds instead of time steps
 num_ticks1 = 6  
 tick_positions1 = np.linspace(0, n_max, num_ticks1)
 tick_labels1 = np.linspace(0, n_max*dt*1e15, num_ticks1)
