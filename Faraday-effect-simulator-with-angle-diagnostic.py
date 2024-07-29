@@ -14,7 +14,7 @@ mu_0 = 1.256637062e-6  #vacuum permeability
 c = 1/np.sqrt(e_0*mu_0) #speed of light
 m_e = 9.1e-31     #electron mass
 q_e = 1.6e-19     #elementary charge
-B_0 = 5e2         #magnitude external B field
+B_0 = 7.5e2         #magnitude external B field
 
 m_max = 1000      #steps we want to perform (space)
 n_max = 1400      #steps we want to perform (time)
